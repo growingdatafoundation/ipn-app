@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<!--
+ /*
+*
+* � The Nature Ninjas Team
+* as part of #GovHack2014 & #UnleashedADL
+* http://whatgrowshere.com.au
+*
+* Licensed to the Apache Software Foundation (ASF) under one
+* or more contributor license agreements.  See the NOTICE file
+* distributed with this work for additional information
+* regarding copyright ownership.  The ASF licenses this file
+* to you under the Apache License, Version 2.0 (the
+* "License"); you may not use this file except in compliance
+* with the License.  You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <!-- <meta name="format-detection" content="telephone=no" />
+         WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+		 <link rel="stylesheet" type="text/css" href="css/jquery.mobile.icons-1.4.5.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/ol.css" />
+        <!-- <meta name="msapplication-tap-highlight" content="no" /> -->
+        <title>What grows here</title>
+		<style>
+
+			
+		</style>
+    </head>
+    <body>
+<!-- Menu panel -->
+<div data-role="panel" data-display="overlay" id="menu-panel">
+	<ul data-role="listview">
+		<li data-icon="false"><a href="#location" class="blue-bg menu-item"><img src="img/app_icons/menu_location.png"/>LOCATION</a></li>
+		<li data-icon="false"><a href="#" onclick="click_landscape()"  class="dark-green-bg menu-item"><img src="img/app_icons/menu_landsape.png"/>LANDSCAPE</a></li>
+		<li data-icon="false"><a href="#plant-search" class="green-bg menu-item"><img src="img/app_icons/menu_search.png"/>Plant search</a></li>
+		<li data-icon="false"><a href="#" onclick="click_landscape()" class="green-bg menu-item"><img src="img/app_icons/menu_plantlist.png"/>Plant lists</a></li>
+		<li data-icon="false"><a href="#" onclick="click_landscape_myplant()" class="green-bg menu-item"><img src="img/app_icons/menu_myplant.png"/>My plants</a></li>
+		<li data-icon="false"><a href="#" onclick="click_revegetate()" class="dark-red-bg menu-item"><img src="img/app_icons/menu_landsape.png"/>REVEGETATE</a></li>
+		<li data-icon="false"><a href="#calculate" class="red-bg menu-item"><img src="img/app_icons/menu_calculatearea.png"/>Calculate area</a></li>
+		<li data-icon="false"><a href="#" onclick="click_revegetate()" class="red-bg menu-item"><img src="img/app_icons/menu_plantlist.png"/>Plant list</a></li>
+		<li data-icon="false"><a href="#" onclick="click_revegetate_myplant()" class="red-bg menu-item"><img src="img/app_icons/menu_landsape.png"/>My area plants</a></li>
+		<li data-icon="false"><a href="#" class="blue-bg menu-item"><img src="img/app_icons/menu_share.png"/>SHARE</a></li>
+		<li data-icon="false"><a href="#" onclick="export_email()" class="blue-bg menu-item"><img src="img/app_icons/menu_export.png"/>EXPORT</a></li>
+		<li data-icon="false"><a href="#" onclick="openlink('http://www.whatgrowshere.com.au/orders.html')" class="blue-bg menu-item"><img src="img/app_icons/menu_order.png"/>ORDER</a></li>
+		<li data-icon="false"><a href="#" class="blue-bg menu-item" onclick="openlink('http://www.whatgrowshere.com.au/resources.html')"><img src="img/app_icons/menu_resources.png"/>RESOURCES</a></li>
+		<li data-icon="false"><a href="#" onclick="openlink('http://whatgrowshere.com.au/contact.html')" class="grey-bg menu-item"><img src="img/app_icons/menu_contact.png"/>CONTACT</a></li>
+		<li data-icon="false"><a href="#"  onclick="openlink('http://www.growingdatafoundation.org/joingdf.html')"  class="grey-bg menu-item"><img src="img/app_icons/menu_join.png"/>JOIN</a></li>
+		
+
+		
+	</ul>
+</div>
+<!-- End menu panel -->
+<!-- Header -->
+
+<!-- End deader -->
+
+<div data-role="page" id="location" class="blue">
+	<div data-role="header" class="blue-bg">
+		<h1 class="logo"><img src="img/logo.png"/></h1>
+		<div class="c-header-button-left"><a href="#menu-panel" class="icon-bt"><img src="img/menu_bars.png"/></a></div>	
+	</div><!-- /header -->
+	<div role="main" class="ui-content">
+		<div class="page-header">
+			<img src="img/app_icons/location_pin.png" class="h2-logo"/>
+			<h2>LOCATION</h2>
+			<div class="page-intro">Please search for location you wish to Landscape or Revegetate, or locate yourself by clicking on the crosshair icon on the map.</div>
+		</div>
+		<div class="page-content table">
+			
+			<div class="search-input row">
+				<input class="cell" type="text" data-role="none" name="address" id="address" value="" placeholder="Enter your address">
+				<button class="cell" data-role="none" name="search_square" id="search_square" onclick="find_address()"></button>
+			</div>
+			<div class="form-map" id="locationMap"></div>
+			
+			<div class="double-button row">
+				<button type="text" class="cell green-bg" data-role="none" name="width" id="width" onclick="click_landscape()"><img src="img/app_icons/menu_landsape.png"/>LANDSCAPE</button>
+				<button type="text" class="cell red-bg" data-role="none" name="width" id="width"  onclick="click_revegetate()"><img src="img/app_icons/menu_landsape.png"/>REVEGETATE</button>
+				
+			</div>
+		</div>
+	</div><!-- /content -->
+</div><!-- /page one -->
+
+<div data-role="page" id="calculate" class="red">
+	<div data-role="header" class="blue-bg">
+		<h1 class="logo"><img src="img/logo.png"/></h1>
+		<div class="c-header-button-left"><a href="#menu-panel" class="icon-bt"><img src="img/menu_bars.png"/></a></div>	
+	</div><!-- /header -->
+	<div role="main" class="ui-content">
+		<div class="page-header">
+			<img src="img/app_icons/calculate_area_red.png" class="h2-logo"/>
+			<h2>CALCULATE AREA</h2>
+			<div class="page-intro">To calculate number of plans required to revegetate please enter your approximate area below. Please refer resources tab for help.</div>
+		</div>
+		<div class="page-content table">
+			<div class="double-input row">
+				<input type="number" class="cell" data-role="none" name="swidth" id="swidth" value="" placeholder="Enter width (metre)" onkeypress="get_square()"/>
+				<input type="number" class="cell" data-role="none" name="sheight" id="sheight" value="" placeholder="Enter length (metre)"  onkeypress="get_square()"/>
+			</div>
+			<div class="form-label">
+				EQUALS (square metre)
+			</div>
+			<div class="search-input row">
+				<input class="cell" type="number" data-role="none" name="square" id="square" value="" placeholder="Enter quare metre area"/>
+				<button class="cell" data-role="none" name="search_square" id="search_square" onclick="square_calculate()"></button>
+			</div>
+			<div class="form-label">
+				OR (hectare)
+			</div>
+			<div class="search-input row">
+				<input class="cell" type="number" data-role="none" name="hectare" id="hectare" value="" placeholder="Enter hectare area"/>
+				<button class="cell" data-role="none" name="search_hectare" id="search_hectare" onclick="hectare_calculate()"></button>
+			</div>
+			<div class="form-result" id="calculate-result">
+			</div>
+		</div>
+	</div><!-- /content -->
+</div><!-- /page calculate -->
+
+<div data-role="page" id="plant-search" class="green">
+	<div data-role="header" class="blue-bg">
+		<h1 class="logo"><img src="img/logo.png"/></h1>
+		<div class="c-header-button-left"><a href="#menu-panel" class="icon-bt"><img src="img/menu_bars.png"/></a></div>	
+	</div><!-- /header -->
+	<div role="main" class="ui-content">
+		<div class="page-header">
+			<img src="img/app_icons/search_green.png" class="h2-logo"/>
+			<h2>PLANT SEARCH</h2>
+			<div class="page-intro">To refine your search please enter a plant name or filter plants turning the following options on or off.</div>
+		</div>
+		<form id="search-plant-form" onsubmit="search_plant(); return false;">
+		<div class="page-content table">
+			
+				<div class="search-input row">
+					<input class="cell" type="text" data-role="none" name="plant-name-input" id="plant-name-input" value="" placeholder="Enter plant name">
+					<button class="cell" data-role="none" name="search-plant-name-bt" id="search-plant-name-bt"></button>
+				</div>
+				<div class="form-label">
+					Form
+				</div>
+				<div class="row">
+					<div class="cell search-item">
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/form1_on.png" data-image-off="img/app_icons/form1_off.png"  type="checkbox" name="search-form-ckb[]" id="search-form-ckb-1" value="1"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/form2_on.png" data-image-off="img/app_icons/form2_off.png" type="checkbox" name="search-form-ckb[]" id="search-form-ckb-2" value="2"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/form3_on.png" data-image-off="img/app_icons/form3_off.png" type="checkbox" name="search-form-ckb[]" id="search-form-ckb-3" value="3"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/form4_on.png" data-image-off="img/app_icons/form4_off.png"  type="checkbox" name="search-form-ckb[]" id="search-form-ckb-4" value="4"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/form5_on.png" data-image-off="img/app_icons/form5_off.png" type="checkbox" name="search-form-ckb[]" id="search-form-ckb-5" value="5"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/form6_on.png" data-image-off="img/app_icons/form6_off.png" type="checkbox" name="search-form-ckb[]" id="search-form-ckb-6" value="6"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/form7_on.png" data-image-off="img/app_icons/form7_off.png"  type="checkbox" name="search-form-ckb[]" id="search-form-ckb-7" value="7"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/form8_on.png" data-image-off="img/app_icons/form8_off.png" type="checkbox" name="search-form-ckb[]" id="search-form-ckb-8" value="8"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/form9_on.png" data-image-off="img/app_icons/form9_off.png" type="checkbox" name="search-form-ckb[]" id="search-form-ckb-9" value="9"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/form10_on.png" data-image-off="img/app_icons/form10_off.png"  type="checkbox" name="search-form-ckb[]" id="search-form-ckb-10" value="10"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/form11_on.png" data-image-off="img/app_icons/form11_off.png" type="checkbox" name="search-form-ckb[]" id="search-form-ckb-11" value="11"/>
+						
+					</div>
+				</div>
+				<div class="form-label">
+					Height(m)
+				</div>
+				<div class="row">
+					<div data-role="rangeslider" class="search-item">
+				        <input type="range" name="height-min" data-track-theme="a" data-corners="false" data-theme="a" id="height-min" min="0" max="10" step=".1" value="2">
+				        <input type="range" name="height-max" data-track-theme="a"  data-corners="false" data-theme="a" id="height-max" min="0" max="10" step=".1" value="5">
+				    </div>
+				</div>
+				<div class="form-label">
+					Spread(m)
+				</div>
+				<div class="row">
+					<div data-role="rangeslider" class="search-item">
+				        <input type="range" name="spread-min" data-track-theme="a" data-corners="false" data-theme="a" id="spread-min" min="0" max="10" step=".1" value="2">
+				        <input type="range" name="spread-max" data-track-theme="a"  data-corners="false" data-theme="a" id="spread-max" min="0" max="10" step=".1" value="5">
+				    </div>
+				</div>
+				<div class="form-label">
+					Flower colour
+				</div>
+				<div class="row">
+					<div class="cell search-item">
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_bl_on.png" data-image-off="img/app_icons/colour_bl_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-1" value="bl"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_b_on.png" data-image-off="img/app_icons/colour_b_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-2" value="b"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_br_on.png" data-image-off="img/app_icons/colour_br_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-3" value="br"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_bu_on.png" data-image-off="img/app_icons/colour_bu_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-4" value="bu"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_cr_on.png" data-image-off="img/app_icons/colour_cr_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-5" value="cr"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_g_on.png" data-image-off="img/app_icons/colour_g_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-6" value="g"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_i_on.png" data-image-off="img/app_icons/colour_i_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-7" value="i"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_o_on.png" data-image-off="img/app_icons/colour_o_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-8" value="o"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_pk_on.png" data-image-off="img/app_icons/colour_pk_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-9" value="pk"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_pu_on.png" data-image-off="img/app_icons/colour_pu_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-10" value="pu"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_r_on.png" data-image-off="img/app_icons/colour_r_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-11" value="r"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_w_on.png" data-image-off="img/app_icons/colour_w_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-12" value="w"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/colour_y_on.png" data-image-off="img/app_icons/colour_y_off.png"  type="checkbox" name="search-color-ckb[]" id="search-color-ckb-13" value="y"/>
+					</div>
+				</div>
+				<div class="form-label">
+					Flower season
+				</div>
+				<div class="row">
+					<div class="cell search-item">
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/season_sp_on.png" data-image-off="img/app_icons/season_sp_off.png"  type="checkbox" name="search-season-ckb[]" id="search-season-ckb-1" value="sp"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/season_s_on.png" data-image-off="img/app_icons/season_s_off.png"  type="checkbox" name="search-season-ckb[]" id="search-season-ckb-2" value="s"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/season_a_on.png" data-image-off="img/app_icons/season_a_off.png"  type="checkbox" name="search-season-ckb[]" id="search-season-ckb-3" value="a"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/season_w_on.png" data-image-off="img/app_icons/season_w_off.png"  type="checkbox" name="search-season-ckb[]" id="search-season-ckb-4" value="w"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/season_f_on.png" data-image-off="img/app_icons/season_f_off.png"  type="checkbox" name="search-season-ckb[]" id="search-season-ckb-5" value="f"/>
+					</div>
+				</div>
+				<div class="form-label">
+					Attracts the following
+				</div>
+				<div class="row">
+					<div class="cell search-item">
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/attracts_bird_on.png" data-image-off="img/app_icons/attracts_bird_off.png"  type="checkbox" name="search-attract-ckb[]" id="search-attract-ckb-1" value="bird"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/attracts_butterfly_on.png" data-image-off="img/app_icons/attracts_butterfly_off.png"  type="checkbox" name="search-attract-ckb[]" id="search-attract-ckb-2" value="butterfly"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/attracts_frog_on.png" data-image-off="img/app_icons/attracts_frog_off.png"  type="checkbox" name="search-attract-ckb[]" id="search-attract-ckb-3" value="frog"/>
+						<input data-role="none" class="ccheckbox" data-image-on="img/app_icons/attracts_bee_on.png" data-image-off="img/app_icons/attracts_bee_off.png"  type="checkbox" name="search-attract-ckb[]" id="search-attract-ckb-4" value="bee"/>
+						
+					</div>
+				</div>
+			
+		</div>
+		</form>
+	</div><!-- /content -->
+</div><!-- /page plant search -->
+
+<div data-role="page" id="plant-list-landscape" class="green">
+	<div data-role="header" class="blue-bg">
+		<h1 class="logo"><img src="img/logo.png"/></h1>
+		<div class="c-header-button-left"><a href="#menu-panel" class="icon-bt"><img src="img/menu_bars.png"/></a></div>	
+	</div><!-- /header -->
+	<div role="main" class="ui-content">
+		<div class="page-header">
+			<img src="img/app_icons/list_green.png" class="h2-logo"/>
+			<h2>PLANT LIST<span class="region-name-header"></span></h2>
+			<div class="page-intro">Your location includes the following plants. To refine your search please use the plant search option in the menu</div>
+		</div>
+		
+		<div class="page-content table">
+			<ul data-role="listview"  data-filter="true" id="ls-plant-list" class="clist" data-inset="true">
+				<li>					
+		        	<img src="http://big-flowers.com/wp-content/uploads/2015/03/90urp1283y4fn.jpg">
+		    		<h3>Broken Bells</h3>
+		    		<p>Broken Bells</p>
+					<img class="fav-icon-list" src="img/app_icons/star_on.png"/>
+			    </li>
+				<li>					
+		        	<img src="http://webneel.com/wallpaper/sites/default/files/images/01-2014/20-flower-wallpaper.jpg">
+		    		<h3>Broken Bells</h3>
+		    		<p>Broken Bells</p>
+					<img class="fav-icon-list" src="img/app_icons/star_off.png"/>
+			    </li>
+			    
+
+			</ul>
+				
+				
+			
+		</div>
+	</div><!-- /content -->
+</div><!-- /page -->
+
+<div data-role="page" id="my-plant-list" class="green">
+	<div data-role="header" class="blue-bg">
+		<h1 class="logo"><img src="img/logo.png"/></h1>
+		<div class="c-header-button-left"><a href="#menu-panel" class="icon-bt"><img src="img/menu_bars.png"/></a></div>	
+	</div><!-- /header -->
+	<div role="main" class="ui-content">
+		<div class="page-header">
+			<img src="img/app_icons/my_list_green.png" class="h2-logo"/>
+			<h2>MY PLANT LIST</h2>
+			<div class="page-intro">Your selection includes the following plants. To refine your search please use the plant search option in the menu</div>
+		</div>
+		
+		<div class="page-content table">
+			<ul data-role="listview"  id="my-plan-list-list" data-filter="true" class="clist" data-inset="true">
+				<li>					
+		        	<img src="http://big-flowers.com/wp-content/uploads/2015/03/90urp1283y4fn.jpg">
+		    		<h3>Broken Bells</h3>
+		    		<p>Broken Bells</p>
+					<img class="fav-icon-list" src="img/app_icons/star_on.png"/>
+			    </li>
+				<li>					
+		        	<img src="http://webneel.com/wallpaper/sites/default/files/images/01-2014/20-flower-wallpaper.jpg">
+		    		<h3>Broken Bells</h3>
+		    		<p>Broken Bells</p>
+					<img class="fav-icon-list" src="img/app_icons/star_on.png"/>
+			    </li>
+			    
+
+			</ul>
+				
+				
+			
+		</div>
+	</div><!-- /content -->
+</div><!-- /page -->
+
+<div data-role="page" id="plant-list-revegetate" class="red">
+	<div data-role="header" class="blue-bg">
+		<h1 class="logo"><img src="img/logo.png"/></h1>
+		<div class="c-header-button-left"><a href="#menu-panel" class="icon-bt"><img src="img/menu_bars.png"/></a></div>	
+	</div><!-- /header -->
+	<div role="main" class="ui-content">
+		<div class="page-header">
+			<img src="img/app_icons/list_red.png" class="h2-logo"/>
+			<h2>PLANT LIST<span class="region-name-header"></span></h2>
+			<div class="page-intro">Your location includes the following plants.</div>
+		</div>
+		
+		<div class="page-content table">
+			<ul data-role="listview" id="veg-plant-list"  data-filter="true" class="clist" data-inset="true">
+				<li>					
+		        	<img src="http://big-flowers.com/wp-content/uploads/2015/03/90urp1283y4fn.jpg">
+		    		<h3>Broken Bells</h3>
+		    		<p>Broken Bells</p>
+					<img class="fav-icon-list" src="img/app_icons/star_on.png"/>
+			    </li>
+				<li>					
+		        	<img src="http://webneel.com/wallpaper/sites/default/files/images/01-2014/20-flower-wallpaper.jpg">
+		    		<h3>Broken Bells</h3>
+		    		<p>Broken Bells</p>
+					<img class="fav-icon-list" src="img/app_icons/star_off.png"/>
+			    </li>
+			    
+
+			</ul>
+				
+				
+			
+		</div>
+	</div><!-- /content -->
+</div><!-- /page -->
+
+<div data-role="page" id="my-area-plant-list" class="red">
+	<div data-role="header" class="blue-bg">
+		<h1 class="logo"><img src="img/logo.png"/></h1>
+		<div class="c-header-button-left"><a href="#menu-panel" class="icon-bt"><img src="img/menu_bars.png"/></a></div>	
+	</div><!-- /header -->
+	<div role="main" class="ui-content">
+		<div class="page-header">
+			<img src="img/app_icons/my_area_red.png" class="h2-logo"/>
+			<h2>MY AREA PLANTS</h2>
+			<div class="page-intro" id="my-area-plant-info">Your location area will need N plants from the following options. You will need a ratio of 1 tree to 2 shrubs to 4 groundcorvers.</div>
+		</div>
+		
+		<div class="page-content table">
+			<ul data-role="listview" id="my-area-plan-list-list" data-filter="true" class="clist" data-inset="true">
+				<li>					
+		        	<img src="http://big-flowers.com/wp-content/uploads/2015/03/90urp1283y4fn.jpg">
+		    		<h3>Broken Bells</h3>
+		    		<p>Broken Bells</p>
+					<img class="fav-icon-list" src="img/app_icons/star_on.png"/>
+			    </li>
+				<li>					
+		        	<img src="http://webneel.com/wallpaper/sites/default/files/images/01-2014/20-flower-wallpaper.jpg">
+		    		<h3>Broken Bells</h3>
+		    		<p>Broken Bells</p>
+					<img class="fav-icon-list" src="img/app_icons/star_on.png"/>
+			    </li>
+			    
+
+			</ul>
+				
+				
+			
+		</div>
+	</div><!-- /content -->
+</div><!-- /page -->
+
+<div data-role="page" id="plant-detail" class="green">
+	<div data-role="header" class="blue-bg">
+		<h1 class="logo"><img src="img/logo.png"/></h1>
+		<div class="c-header-button-left"><a href="#menu-panel" class="icon-bt"><img src="img/menu_bars.png"/></a></div>	
+	</div><!-- /header -->
+	<div role="main" class="ui-content">
+		<div class="page-header" id="plant-detail-header">
+			<img src="img/app_icons/location_pin.png" class="h2-logo"/>
+			<h2>BOTANIC NAME</h2>
+			<div class="page-intro">Common name</div>
+		</div>
+		
+		<div class="page-content table detail-tab" id="page-detail-1">
+			
+				<div class="form-label" id="page-detail-thumbnail">
+					
+				</div>
+				<div class="form-label">
+					Form
+				</div>
+				<div class="row">
+					<div class="cell search-item" id="page-detail-form">
+						<img src="img/app_icons/form1_on.png"/>
+						<img src="img/app_icons/form1_on.png"/>
+					</div>
+				</div>
+				<div class="form-label">
+					Height (m)
+				</div>
+				<div class="row">
+					<div class="search-item" id="page-detail-height">
+				       1.5 m
+				    </div>
+				</div>
+				<div class="form-label">
+					Spread (m)
+				</div>
+				<div class="row">
+					<div class="search-item" id="page-detail-spread">
+				       1.5 m
+				    </div>
+				</div>
+				<div class="form-label">
+					Flower colour
+				</div>
+				<div class="row">
+					<div class="cell search-item" id="page-detail-color">
+						<img src="img/app_icons/form1_on.png"/>
+						<img src="img/app_icons/form1_on.png"/>
+					</div>
+				</div>
+				<div class="form-label">
+					Flower season
+				</div>
+				<div class="row">
+					<div class="cell search-item" id="page-detail-season">
+						<img src="img/app_icons/form1_on.png"/>
+						<img src="img/app_icons/form1_on.png"/>
+					</div>
+				</div>
+				<div class="form-label">
+					Attracts the following
+				</div>
+				<div class="row">
+					<div class="cell search-item" id="page-detail-attract">
+						<img src="img/app_icons/form1_on.png"/>
+						<img src="img/app_icons/form1_on.png"/>
+						
+					</div>
+				</div>
+				<div>
+					<img class="detail-navigate" src="img/app_icons/page_right.png" onclick="show_page2()"/>
+				</div>
+		</div>
+		<div class="page-content table detail-tab" id="page-detail-2">
+				<div class="form-label">
+					Australia occurence
+				</div>
+				
+				<div class="occurence-map" id="page-detail-heatmap">
+					
+				</div>
+				
+				<div>
+					<img class="detail-navigate" src="img/app_icons/page_left.png" onclick="show_page1()"/>
+				</div>
+		</div>
+		
+	</div><!-- /content -->
+</div><!-- /page plant search -->
+
+<!-- Start of third page: #popup -->
+<div data-role="page" id="info">
+
+	<div data-role="header" data-theme="b">
+		<h1 class="info-header">Information</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+		
+		<h2>Concept / Design / Development by Nature Ninjas: </h2>
+		<div>Joerg Boeselt; Leanne Brookes; Samantha Bywaters; Leo Gaggl; John Flackett; Brent Leideritz; David Lindley; Kristen Morgan; Rhys Moult; Katherine Nguyen; James Plummer; Sean Simper; Kenny Tran; Kien Vu; Catriona Ward.</div>
+
+		<p>Developed as part of the 2014 UnleashedADL GovHack weekend using open government datasets offered by Government and business and community including: South Australian State Flora Catalogue and the Atlas of Living Australia Research data.</p>
+		
+		<div>
+			<a href="#" data-rel="back" class="ui-btn ui-icon-delete ui-btn-icon-left ui-shadow-icon custom-button">Close</a>
+		</div>
+	</div><!-- /content -->
+	
+	
+</div><!-- /page popup -->
+<div id="loading"></div>			
+			
+
+        <!-- <script type="text/javascript" src="cordova.js"></script> -->
+        
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.7.0/ol.js"></script>
+		
+		<script type="text/javascript" src="js/jquery.storageapi.min.js"></script>
+		
+		<script type="text/javascript" src="js/main.js"></script>
+        <script>
+			
+		</script>
+    </body>
+</html>
